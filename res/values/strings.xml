@@ -1,0 +1,10 @@
+<resources>
+
+    <string name="app_name">ניבים ופתגמים</string>
+    <string name="contact">צור קשר</string>
+    <string name="title_activity_main">ניבים ופתגמים</string>
+    <string name="Title"><u>"פירוש:"</u> </string>
+    <string name="Header"><u>כל הזכויות שמורות לאתר ניבונכון</u></string>
+	<string name="about">אודות</string>
+	<string name="donate">תרום</string>
+</resources>

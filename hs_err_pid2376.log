@@ -1,0 +1,127 @@
+#
+# A fatal error has been detected by the Java Runtime Environment:
+#
+#  Internal Error (javaClasses.cpp:129), pid=2376, tid=956
+#  fatal error: Invalid layout of preloaded class
+#
+# JRE version: 7.0_17-b02
+# Java VM: Java HotSpot(TM) Client VM (23.7-b01 mixed mode windows-x86 )
+# Failed to write core dump. Minidumps are not enabled by default on client versions of Windows
+#
+# If you would like to submit a bug report, please visit:
+#   http://bugreport.sun.com/bugreport/crash.jsp
+#
+
+---------------  T H R E A D  ---------------
+
+Current thread (0x01ebac00):  JavaThread "Unknown thread" [_thread_in_vm, id=956, stack(0x01ce0000,0x01d30000)]
+
+Stack: [0x01ce0000,0x01d30000],  sp=0x01d2f9dc,  free space=318k
+Native frames: (J=compiled Java code, j=interpreted, Vv=VM code, C=native code)
+V  [jvm.dll+0x16f261]
+V  [jvm.dll+0x1693d6]
+V  [jvm.dll+0x2079f]
+V  [jvm.dll+0x20826]
+V  [jvm.dll+0x2e5bd]
+V  [jvm.dll+0x2e869]
+V  [jvm.dll+0x77ba1]
+V  [jvm.dll+0x77f5b]
+V  [jvm.dll+0x1290e1]
+V  [jvm.dll+0x149b3a]
+V  [jvm.dll+0xa98df]
+C  [javaw.exe+0x13ca]
+C  [javaw.exe+0x1e3c]
+C  [javaw.exe+0xa5a1]
+C  [javaw.exe+0xa62b]
+C  [KERNEL32.DLL+0x1866]  BaseThreadInitThunk+0x12
+C  [ntdll.dll+0x368f1]  LdrInitializeThunk+0x1a3
+C  [ntdll.dll+0x3689d]  LdrInitializeThunk+0x14f
+
+
+---------------  P R O C E S S  ---------------
+
+Java Threads: ( => current thread )
+
+Other Threads:
+
+=>0x01ebac00 (exited) JavaThread "Unknown thread" [_thread_in_vm, id=956, stack(0x01ce0000,0x01d30000)]
+
+VM state:not at safepoint (not fully initialized)
+
+VM Mutex/Monitor currently owned by a thread: None
+
+GC Heap History (0 events):
+No events
+
+Deoptimization events (0 events):
+No events
+
+Internal exceptions (0 events):
+No events
+
+Events (10 events):
+Event: 0.035 loading class 0x01d848e0 done
+Event: 0.036 loading class 0x01d65638 done
+Event: 0.036 loading class 0x01d65390
+Event: 0.036 loading class 0x01d8b2b0
+Event: 0.036 loading class 0x01d8b2b0 done
+Event: 0.036 loading class 0x01d8b358
+Event: 0.036 loading class 0x01d8b358 done
+Event: 0.036 loading class 0x01dd1780
+Event: 0.036 loading class 0x01dd1780 done
+Event: 0.036 loading class 0x01d65390 done
+
+
+Dynamic libraries:
+0x003b0000 - 0x003df000 	C:\Program Files\Java\jre7\bin\javaw.exe
+0x77c30000 - 0x77d97000 	C:\Windows\SYSTEM32\ntdll.dll
+0x756e0000 - 0x757d8000 	C:\Windows\system32\KERNEL32.DLL
+0x755a0000 - 0x7565d000 	C:\Windows\system32\KERNELBASE.dll
+0x77690000 - 0x7773e000 	C:\Windows\system32\ADVAPI32.dll
+0x76490000 - 0x765b1000 	C:\Windows\system32\USER32.dll
+0x73330000 - 0x73527000 	C:\Windows\WinSxS\x86_microsoft.windows.common-controls_6595b64144ccf1df_6.0.9200.16384_none_893961408605e985\COMCTL32.dll
+0x763d0000 - 0x76481000 	C:\Windows\system32\msvcrt.dll
+0x77bf0000 - 0x77c24000 	C:\Windows\SYSTEM32\sechost.dll
+0x76270000 - 0x76342000 	C:\Windows\system32\RPCRT4.dll
+0x777b0000 - 0x778ba000 	C:\Windows\system32\GDI32.dll
+0x76070000 - 0x7609b000 	C:\Windows\system32\IMM32.DLL
+0x778c0000 - 0x7799d000 	C:\Windows\system32\MSCTF.dll
+0x68190000 - 0x6824e000 	C:\Program Files\Java\jre7\bin\msvcr100.dll
+0x619f0000 - 0x61d3c000 	C:\Program Files\Java\jre7\bin\client\jvm.dll
+0x694b0000 - 0x694b8000 	C:\Windows\SYSTEM32\WSOCK32.dll
+0x70640000 - 0x70661000 	C:\Windows\SYSTEM32\WINMM.dll
+0x760a0000 - 0x760a6000 	C:\Windows\system32\PSAPI.DLL
+0x77740000 - 0x77790000 	C:\Windows\system32\WS2_32.dll
+0x70610000 - 0x7063a000 	C:\Windows\SYSTEM32\WINMMBASE.dll
+0x763c0000 - 0x763c8000 	C:\Windows\system32\NSI.dll
+0x71bb0000 - 0x71bbc000 	C:\Program Files\Java\jre7\bin\verify.dll
+0x6d310000 - 0x6d330000 	C:\Program Files\Java\jre7\bin\java.dll
+0x6acb0000 - 0x6acc3000 	C:\Program Files\Java\jre7\bin\zip.dll
+0x72a90000 - 0x72bb9000 	C:\Windows\SYSTEM32\dbghelp.dll
+
+VM Arguments:
+jvm_args: -Dfile.encoding=Cp1255 -Xbootclasspath:C:\adt-bundle-windows-x86\sdk\platforms\android-4.2\android.jar;C:\adt-bundle-windows-x86\sdk\add-ons\addon-google_apis-google-17\libs\effects.jar;C:\adt-bundle-windows-x86\sdk\add-ons\addon-google_apis-google-17\libs\usb.jar;C:\adt-bundle-windows-x86\sdk\add-ons\addon-google_apis-google-17\libs\maps.jar 
+java_command: com.elichai.nivim.test
+Launcher Type: SUN_STANDARD
+
+Environment Variables:
+PATH=C:/Program Files/Java/jre7/bin/client;C:/Program Files/Java/jre7/bin;C:/Program Files/Java/jre7/lib/i386;C:\Python33\;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Program Files\Microsoft Network Monitor 3\;C:\Program Files\OpenVPN\bin;C:\adt-bundle-windows-x86\sdk\platform-tools;C:\adt-bundle-windows-x86\eclipse_indigo;
+USERNAME=elichai2
+OS=Windows_NT
+PROCESSOR_IDENTIFIER=x86 Family 6 Model 14 Stepping 12, GenuineIntel
+
+
+
+---------------  S Y S T E M  ---------------
+
+OS: Windows 8 Build 9200 
+
+CPU:total 2 (2 cores per cpu, 1 threads per core) family 6 model 14 stepping 12, cmov, cx8, fxsr, mmx, sse, sse2, sse3, tsc
+
+Memory: 4k page, physical 2086788k(613724k free), swap 4184244k(1454776k free)
+
+vm_info: Java HotSpot(TM) Client VM (23.7-b01) for windows-x86 JRE (1.7.0_17-b02), built on Mar  1 2013 05:04:36 by "java_re" with unknown MS VC++:1600
+
+time: Fri Apr 12 16:29:09 2013
+elapsed time: 0 seconds
+
