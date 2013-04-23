@@ -1,16 +1,13 @@
 package com.elichai.nivim;
 
-import java.util.Calendar;
 import java.util.Random;
-
-import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.PendingIntent;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.net.Uri;
 import android.app.Activity;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.view.Menu;
@@ -35,10 +32,8 @@ public class MainActivity extends Activity implements OnItemClickListener  {
 	ArrayAdapter<String> adaptr;
 	AdView a;
     static Random rn = new Random();
-    private static Intent alarmIntent = null;
-    private static PendingIntent pendingIntent = null;
-    private static AlarmManager alarmManager = null;
-    
+    //String[] descriptions = getResources().getStringArray(R.array.descriptions);
+    private MyAlarmReceiver alarm;
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,23 +60,13 @@ public class MainActivity extends Activity implements OnItemClickListener  {
         } catch (Exception e) {
         	Toast.makeText(this, "Ad Faild" + e.getMessage(), Toast.LENGTH_LONG).show();
         }
-        try {
-        	//create();
-        	Intent myIntent = new Intent(MainActivity.this , MyAlarmReceiver.class);     
-        	AlarmManager alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
-        	PendingIntent pendingIntent = PendingIntent.getService(MainActivity.this, 0, myIntent, 0);
-        	Calendar calendar = Calendar.getInstance();
-        	calendar.set(Calendar.HOUR_OF_DAY, 19);
-        	calendar.set(Calendar.MINUTE, 4);
-        	//calendar.set(Calendar.SECOND, 00);
-        	alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), 24*60*60*1000 , pendingIntent);
-//        	alarmIntent = new Intent ( null, MyAlarmReceiver.class );
-//            pendingIntent = PendingIntent.getBroadcast( this.getApplicationContext(), 234324243, alarmIntent, 0 );
-//            alarmManager = ( AlarmManager ) getSystemService( ALARM_SERVICE );
-//            alarmManager.setRepeating( AlarmManager.RTC_WAKEUP, ( uploadInterval * 1000 ),( uploadInterval * 1000 ), pendingIntent );
-        } catch (Exception e) {
-        	Toast.makeText(this, "PopUp faild" + e.getMessage(), Toast.LENGTH_LONG).show();
-        }
+        alarm = new MyAlarmReceiver();
+        if(alarm != null){
+    		alarm.setOnetimeTimer(this);
+    	}else{
+    		Toast.makeText(this, "Alarm is null", Toast.LENGTH_SHORT).show();
+    	}
+       
     }
     public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
@@ -136,32 +121,6 @@ public class MainActivity extends Activity implements OnItemClickListener  {
 		}
 		
 	}
-	public void create (/*String[] descriptions*/) {	
-		String[] descriptions = getResources().getStringArray(R.array.descriptions);
-		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setCancelable(true);
-        builder.setTitle("משפט אקראי יומי");
-        try{
-        	builder.setMessage(descriptions[rn.nextInt(395)-1]);
-        } catch (Exception e) {
-        	Toast.makeText(this, "PopUp-Random faild" + e.getMessage(), Toast.LENGTH_LONG).show();
-        	 try{
-             	builder.setMessage("test");
-             } catch (Exception ee) {
-             	Toast.makeText(this, "PopUp-Message faild" + e.getMessage(), Toast.LENGTH_LONG).show();
-             }
-        }
-        builder.setInverseBackgroundForced(false);
-        builder.setPositiveButton("סגור",
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog,
-                            int which) {
-                        dialog.dismiss();
-                    }
-                });
-        AlertDialog alert = builder.create();
-        alert.show();
-	}
+	
 
 }
