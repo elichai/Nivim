@@ -1,14 +1,16 @@
 package com.elichai.nivim;
 
+import java.net.URLEncoder;
 import java.util.Random;
-import android.app.AlertDialog;
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.net.Uri;
 import android.app.Activity;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.graphics.drawable.ColorDrawable;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -22,6 +24,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.elichai.nivim.R;
+import com.elichai.nivim.utils.TimePickerFragment;
 import com.google.ads.AdRequest;
 import com.google.ads.AdSize;
 import com.google.ads.AdView;
@@ -32,17 +35,21 @@ public class MainActivity extends Activity implements OnItemClickListener  {
 	ArrayAdapter<String> adaptr;
 	AdView a;
     static Random rn = new Random();
-    //String[] descriptions = getResources().getStringArray(R.array.descriptions);
+    public static int hour,min;
     private MyAlarmReceiver alarm;
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         BugSenseHandler.initAndStartSession(MainActivity.this, "9730ed70");
         setContentView(R.layout.activity_main);
+        String[] s1 = getResources().getStringArray(R.array.nivim_list);
+//        for(int i=0;i<s1.length;i++) {
+//        	s1[i] = ("<b>"+s1[i]+"</b>");
+//        }
         list = (ListView) findViewById(R.id.listView1);
 		adaptr = new ArrayAdapter<String>(this,
          	    android.R.layout.simple_list_item_1
-         	    , getResources().getStringArray(R.array.nivim_list));
+         	    , s1);
 		View header = getLayoutInflater().inflate(R.layout.header, null);
 		list.addHeaderView(header);
 		list.setAdapter(adaptr);
@@ -56,9 +63,10 @@ public class MainActivity extends Activity implements OnItemClickListener  {
         AdRequest adRequest = new AdRequest();
         adRequest.addTestDevice(AdRequest.TEST_EMULATOR);
         adRequest.addTestDevice("014E0F5019010019");
-        a.loadAd(adRequest);  
+        a.loadAd(adRequest);
         } catch (Exception e) {
-        	Toast.makeText(this, "Ad Faild" + e.getMessage(), Toast.LENGTH_LONG).show();
+        	Toast.makeText(this, "Ad Faild " + e.getMessage(), Toast.LENGTH_LONG).show();
+
         }
         alarm = new MyAlarmReceiver();
         if(alarm != null){
@@ -74,8 +82,16 @@ public class MainActivity extends Activity implements OnItemClickListener  {
         return(super.onCreateOptionsMenu(menu));
         
 	}
+	@SuppressWarnings("deprecation")
 	public boolean onOptionsItemSelected(MenuItem item) {
 		super.onOptionsItemSelected(item);
+	    PackageInfo pInfo = null;
+		try {
+			pInfo = getPackageManager().getPackageInfo("com.elichai.nivim", PackageManager.GET_META_DATA);
+		} catch (NameNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		switch (item.getItemId()) {
 			case R.id.about:
 				startActivity(new Intent(this, About.class));
@@ -83,13 +99,12 @@ public class MainActivity extends Activity implements OnItemClickListener  {
 			case R.id.contact:
 				Intent emailIntent = new Intent(Intent.ACTION_SENDTO);
 				String uriText;
-
-				uriText = "mailto:"+"e2Apps.dev@gmail.com" + 
-						"?subject="+"[האפליקציה: פירוש לניבים ולפתגמים]" + 
-						"&body=";
-				uriText = uriText.replace("", "%20");
+				uriText =
+					    "mailto:e2Apps.dev@gmail.com" + 
+					    "?subject=" + URLEncoder.encode("[האפליקציה: פירוש לניבים ולפתגמים]") + 
+					    "&body="+URLEncoder.encode("Ver:"+pInfo.versionName+":")+"\n\r";
 				Uri uri = Uri.parse(uriText);
-
+				 	
 				emailIntent.setData(uri);
 				startActivity(android.content.Intent.createChooser(emailIntent,"בחר באיזה אפליקציה ברצונך להשתמש כדי לשלוח את המייל"));
 				break;
@@ -98,6 +113,15 @@ public class MainActivity extends Activity implements OnItemClickListener  {
 				Intent i1 = new Intent(Intent.ACTION_VIEW);
 				i1.setData(Uri.parse(url1));
 				startActivity(i1);
+				break;
+			case R.id.dialog:
+				Intent intent2 = new Intent(this, MyDialog.class);
+	            intent2.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+	            intent2.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+	            this.startActivity(intent2);
+				break;
+			case R.id.TimePick:
+				showTimePickerDialog();
 				break;
 		}
 		return false;
@@ -121,6 +145,10 @@ public class MainActivity extends Activity implements OnItemClickListener  {
 		}
 		
 	}
-	
-
+	@SuppressLint("NewApi")
+	public void showTimePickerDialog() {
+		
+	    TimePickerFragment newFragment = new TimePickerFragment();
+	    newFragment.show(getFragmentManager(), "timePicker");
+	    }
 }

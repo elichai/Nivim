@@ -7,4 +7,6 @@
     <string name="Header"><u>כל הזכויות שמורות לאתר ניבונכון</u></string>
 	<string name="about">אודות</string>
 	<string name="donate">תרום</string>
+	<string name="dialog">דיאלוג</string>
+	<string name="TimePick">בחר שעה לפתגם אקראי</string>
 </resources>

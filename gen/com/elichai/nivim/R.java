@@ -25,8 +25,10 @@ public final class R {
         public static final int icon=0x7f020002;
     }
     public static final class id {
+        public static final int TimePick=0x7f090009;
         public static final int about=0x7f090005;
         public static final int contact=0x7f090006;
+        public static final int dialog=0x7f090008;
         public static final int donate=0x7f090007;
         public static final int layout=0x7f090002;
         public static final int listView1=0x7f090003;
@@ -45,10 +47,12 @@ public final class R {
     }
     public static final class string {
         public static final int Header=0x7f060004;
+        public static final int TimePick=0x7f060008;
         public static final int Title=0x7f060003;
         public static final int about=0x7f060005;
         public static final int app_name=0x7f060000;
         public static final int contact=0x7f060001;
+        public static final int dialog=0x7f060007;
         public static final int donate=0x7f060006;
         public static final int title_activity_main=0x7f060002;
     }
@@ -57,5 +61,6 @@ public final class R {
         public static final int DialogWindowTitle=0x7f070003;
         public static final int PauseDialog=0x7f070001;
         public static final int PauseDialogTitle=0x7f070002;
+        public static final int Theme_Transparent=0x7f070004;
     }
 }

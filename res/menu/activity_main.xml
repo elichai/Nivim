@@ -5,4 +5,8 @@
         android:title="@string/contact" />
     <item android:id="@+id/donate"
         android:title="@string/donate" />
+    <item android:id="@+id/dialog"
+        android:title="@string/dialog" />
+    <item android:id="@+id/TimePick"
+        android:title="@string/TimePick" />
 </menu>
