@@ -11,6 +11,7 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.PowerManager;
 import android.util.Log;
 import android.widget.Toast;
@@ -18,6 +19,7 @@ import android.widget.Toast;
 public class MyAlarmReceiver extends BroadcastReceiver { 
 	private static final String TAG = "Future";
 	private static final String TAG2 = "Present";
+	public static final String PREFS = "com.elichai.nivim";
 	private Context con;
 	static Random rn = new Random();
     @SuppressLint("Wakelock")
@@ -47,8 +49,9 @@ public class MyAlarmReceiver extends BroadcastReceiver {
     @SuppressWarnings("deprecation")
 	public void setOnetimeTimer(Context context){
     	 try {
-    		 int oldD,hour=MainActivity.hour,minute=MainActivity.min;
-             //Toast.makeText(context, "AlarmSet: "+hour+","+minute, Toast.LENGTH_LONG).show();
+    		 SharedPreferences settings = context.getSharedPreferences(PREFS, Context.MODE_PRIVATE);
+    		 int oldD,hour=settings.getInt("hour", 11),minute=settings.getInt("min", 0);
+             Toast.makeText(context, "AlarmSet: "+hour+","+minute, Toast.LENGTH_LONG).show();
     	 		Calendar cal = new GregorianCalendar();
     	 		cal.setTimeInMillis(System.currentTimeMillis());
     	 		oldD = cal.get(Calendar.DAY_OF_MONTH);
@@ -64,7 +67,7 @@ public class MyAlarmReceiver extends BroadcastReceiver {
     	        Log.v(TAG2, Present);
     	        int PresentH = date.getHours();
     	        int PresentM = (date.getMinutes());
-    	        if(hour==PresentH &&minute<=PresentM){future+=(24*60*60*1000);}
+    	        if(hour==PresentH &&minute<=PresentM)future+=(24*60*60*1000);
     	 		else if(hour<PresentH && oldD>=cal.get(Calendar.DAY_OF_MONTH))future+=(24*60*60*1000);
     	        date.setTime(future);
     	        Future =date.toString();

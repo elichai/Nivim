@@ -5,13 +5,17 @@ import java.util.Random;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.net.Uri;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.graphics.drawable.ColorDrawable;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -32,42 +36,45 @@ import com.bugsense.trace.BugSenseHandler;
 
 public class MainActivity extends Activity implements OnItemClickListener  {
 	ListView list;
-	ArrayAdapter<String> adaptr;
+	ArrayAdapter<String> adapter;
 	AdView a;
     static Random rn = new Random();
-    public static int hour,min;
     private MyAlarmReceiver alarm;
+    private static final String TAG = "MyActivity";
+    
 	@Override
     public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        BugSenseHandler.initAndStartSession(MainActivity.this, "9730ed70");
+		super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+  	    BugSenseHandler.initAndStartSession(MainActivity.this, "9730ed70");	
+  		try {
+  			//Advertisement:
+  		    a = new AdView(MainActivity.this, AdSize.SMART_BANNER, "a150361b89186e1");
+  		    RelativeLayout layout = (RelativeLayout) findViewById(R.id.layout);
+  		    layout.addView(a);
+  		    AdRequest adRequest = new AdRequest();
+  		    adRequest.addTestDevice(AdRequest.TEST_EMULATOR);
+  		    adRequest.addTestDevice("014E0F5019010019");
+  		    a.loadAd(adRequest);
+  		    Log.v(TAG, "Ad Succed!!");
+  		    } catch (Exception e) {
+  		    	Log.e(TAG, "Ad Failed" + e.getMessage());
+  		       	Toast.makeText(MainActivity.this, "Ad Failed " + e.getMessage(), Toast.LENGTH_LONG).show();
+  		      }
         String[] s1 = getResources().getStringArray(R.array.nivim_list);
 //        for(int i=0;i<s1.length;i++) {
 //        	s1[i] = ("<b>"+s1[i]+"</b>");
 //        }
         list = (ListView) findViewById(R.id.listView1);
-		adaptr = new ArrayAdapter<String>(this,
+		adapter = new ArrayAdapter<String>(this,
          	    android.R.layout.simple_list_item_1
          	    , s1);
 		View header = getLayoutInflater().inflate(R.layout.header, null);
 		list.addHeaderView(header);
-		list.setAdapter(adaptr);
+		list.setAdapter(adapter);
         list.setOnItemClickListener(this);
         list.setFastScrollEnabled(true);
-        try {
-        //AdVertisement:
-        a = new AdView(this, AdSize.SMART_BANNER, "a150361b89186e1");
-        RelativeLayout layout = (RelativeLayout) findViewById(R.id.layout);
-        layout.addView(a);
-        AdRequest adRequest = new AdRequest();
-        adRequest.addTestDevice(AdRequest.TEST_EMULATOR);
-        adRequest.addTestDevice("014E0F5019010019");
-        a.loadAd(adRequest);
-        } catch (Exception e) {
-        	Toast.makeText(this, "Ad Faild " + e.getMessage(), Toast.LENGTH_LONG).show();
-
-        }
+        
         alarm = new MyAlarmReceiver();
         if(alarm != null){
     		alarm.setOnetimeTimer(this);
