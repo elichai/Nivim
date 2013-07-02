@@ -1,16 +1,15 @@
 package com.elichai.nivim;
 
 import java.net.URLEncoder;
-import java.util.Random;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.net.Uri;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
@@ -20,6 +19,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -29,6 +29,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.elichai.nivim.R;
 import com.elichai.nivim.utils.TimePickerFragment;
+import com.elichai.nivim.utils.tools;
 import com.google.ads.AdRequest;
 import com.google.ads.AdSize;
 import com.google.ads.AdView;
@@ -38,33 +39,34 @@ public class MainActivity extends Activity implements OnItemClickListener  {
 	ListView list;
 	ArrayAdapter<String> adapter;
 	AdView a;
-    static Random rn = new Random();
-    private MyAlarmReceiver alarm;
     private static final String TAG = "MyActivity";
-    
-	@Override
-    public void onCreate(Bundle savedInstanceState) {
+    static Window win;
+    public static final String PREFS = "com.elichai.nivim";
+
+    	public void onCreate(Bundle savedInstanceState) {
+    		BugSenseHandler.initAndStartSession(MainActivity.this, "9730ed70");	
+    		final Runnable RadView = new Runnable() {
+    		    public void run() {
+    		  		try {
+    		  			//Advertisement:
+    		  		    a = new AdView(MainActivity.this, AdSize.SMART_BANNER, "a150361b89186e1");
+    		  		    RelativeLayout layout = (RelativeLayout) findViewById(R.id.layout);
+    		  		    layout.addView(a);
+    		  		    AdRequest adRequest = new AdRequest();
+    		  		    adRequest.addTestDevice(AdRequest.TEST_EMULATOR);
+    		  		    adRequest.addTestDevice("014E0F5019010019");
+    		  		    a.loadAd(adRequest);
+    		  		    Log.v(TAG, "Ad Succed!!");
+    		  		    } catch (Exception e) {
+    		  		    	Log.e(TAG, "Ad Failed" + e.getMessage());
+    		  		       	Toast.makeText(MainActivity.this, "Ad Failed " + e.getMessage(), Toast.LENGTH_LONG).show();
+    		  		      }
+    		    }
+    		};
 		super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-  	    BugSenseHandler.initAndStartSession(MainActivity.this, "9730ed70");	
-  		try {
-  			//Advertisement:
-  		    a = new AdView(MainActivity.this, AdSize.SMART_BANNER, "a150361b89186e1");
-  		    RelativeLayout layout = (RelativeLayout) findViewById(R.id.layout);
-  		    layout.addView(a);
-  		    AdRequest adRequest = new AdRequest();
-  		    adRequest.addTestDevice(AdRequest.TEST_EMULATOR);
-  		    adRequest.addTestDevice("014E0F5019010019");
-  		    a.loadAd(adRequest);
-  		    Log.v(TAG, "Ad Succed!!");
-  		    } catch (Exception e) {
-  		    	Log.e(TAG, "Ad Failed" + e.getMessage());
-  		       	Toast.makeText(MainActivity.this, "Ad Failed " + e.getMessage(), Toast.LENGTH_LONG).show();
-  		      }
+        RadView.run();
         String[] s1 = getResources().getStringArray(R.array.nivim_list);
-//        for(int i=0;i<s1.length;i++) {
-//        	s1[i] = ("<b>"+s1[i]+"</b>");
-//        }
         list = (ListView) findViewById(R.id.listView1);
 		adapter = new ArrayAdapter<String>(this,
          	    android.R.layout.simple_list_item_1
@@ -74,18 +76,21 @@ public class MainActivity extends Activity implements OnItemClickListener  {
 		list.setAdapter(adapter);
         list.setOnItemClickListener(this);
         list.setFastScrollEnabled(true);
-        
-        alarm = new MyAlarmReceiver();
-        if(alarm != null){
-    		alarm.setOnetimeTimer(this);
-    	}else{
-    		Toast.makeText(this, "Alarm is null", Toast.LENGTH_SHORT).show();
-    	}
-       
+        RadView.run();
+        tools.alarm(this);
+        SharedPreferences settings = this.getSharedPreferences(PREFS, Context.MODE_PRIVATE);
+        if(!settings.contains("hour") && !settings.contains("chkbox")) {
+        	Toast.makeText(MainActivity.this, "לא הגדרת שעה לפתגם האקראי, אם אתה רוצה להגדיר לחץ על הגדרות ואז על 'בחר שעה לפתגם אקראי' או בטל את הסימון מתחת, לביטול הפתגם האקראי", Toast.LENGTH_LONG).show();
+        	Toast.makeText(MainActivity.this, "לא הגדרת שעה לפתגם האקראי, אם אתה רוצה להגדיר לחץ על הגדרות ואז על 'בחר שעה לפתגם אקראי' או בטל את הסימון מתחת, לביטול הפתגם האקראי", Toast.LENGTH_LONG).show();
+        	Toast.makeText(MainActivity.this, "לא הגדרת שעה לפתגם האקראי, אם אתה רוצה להגדיר לחץ על הגדרות ואז על 'בחר שעה לפתגם אקראי' או בטל את הסימון מתחת, לביטול הפתגם האקראי", Toast.LENGTH_LONG).show();
+        }
     }
     public boolean onCreateOptionsMenu(Menu menu) {
+    	SharedPreferences settings = this.getSharedPreferences(PREFS, Context.MODE_PRIVATE);
 		MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.activity_main, menu);
+      boolean checked = settings.getBoolean("chkbox", true);
+        menu.findItem(R.id.chkbox).setChecked(checked);
         return(super.onCreateOptionsMenu(menu));
         
 	}
@@ -93,6 +98,7 @@ public class MainActivity extends Activity implements OnItemClickListener  {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		super.onOptionsItemSelected(item);
 	    PackageInfo pInfo = null;
+	    SharedPreferences settings = this.getSharedPreferences(PREFS, Context.MODE_PRIVATE);
 		try {
 			pInfo = getPackageManager().getPackageInfo("com.elichai.nivim", PackageManager.GET_META_DATA);
 		} catch (NameNotFoundException e) {
@@ -121,15 +127,22 @@ public class MainActivity extends Activity implements OnItemClickListener  {
 				i1.setData(Uri.parse(url1));
 				startActivity(i1);
 				break;
-			case R.id.dialog:
-				Intent intent2 = new Intent(this, MyDialog.class);
+/*			case R.id.dialog: //Debug option
+				Intent intent2 = new Intent(this, MyDialog.class); 
 	            intent2.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 	            intent2.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 	            this.startActivity(intent2);
-				break;
+				break; */
 			case R.id.TimePick:
+//				startActivity(new Intent(this, TimePickerTest.class));
 				showTimePickerDialog();
 				break;
+			case R.id.chkbox: // For Debug
+				if (item.isChecked()) item.setChecked(false);
+	            else item.setChecked(true);
+				Editor editor = settings.edit();
+				editor.putBoolean("chkbox", item.isChecked());
+				editor.commit();
 		}
 		return false;
 	}

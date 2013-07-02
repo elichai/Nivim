@@ -1,12 +1,20 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:id="@+id/about"
         android:title="@string/about" />
-    <item android:id="@+id/contact"
+    
+  	  <item android:id="@+id/contact"
         android:title="@string/contact" />
+  	  
     <item android:id="@+id/donate"
         android:title="@string/donate" />
-    <item android:id="@+id/dialog"
-        android:title="@string/dialog" />
+    
+<!--    <item android:id="@+id/dialog" // Debug Option
+        android:title="@string/dialog" /> -->
+    
     <item android:id="@+id/TimePick"
         android:title="@string/TimePick" />
+    
+      <item android:id="@+id/chkbox"
+        android:title="@string/chkbox"
+        android:checkable="true" />
 </menu>

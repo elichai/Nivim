@@ -9,5 +9,5 @@
 	<string name="donate">תרום</string>
 	<string name="dialog">דיאלוג</string>
 	<string name="TimePick">בחר שעה לפתגם אקראי</string>
-	<string name="chk">אפשר פתגם אקראי יומי</string>
+	<string name="chkbox">אפשר פתגם אקראי יומי</string>
 </resources>

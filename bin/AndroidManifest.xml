@@ -39,6 +39,7 @@
         		<action android:name="android.intent.action.BOOT_COMPLETED"></action>
     		</intent-filter>
 		</receiver>
+        <activity android:name=".utils.TimePickerTest" android:label="@string/app_name" android:configChanges="locale"></activity>
     </application>
 
 </manifest>
