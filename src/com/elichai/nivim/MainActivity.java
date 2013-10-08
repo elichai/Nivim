@@ -1,6 +1,7 @@
 package com.elichai.nivim;
 
 import java.net.URLEncoder;
+
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.os.Bundle;
@@ -13,7 +14,10 @@ import android.content.SharedPreferences.Editor;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.graphics.Color;
+import android.graphics.PorterDuff.Mode;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -27,6 +31,7 @@ import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
 import com.elichai.nivim.R;
 import com.elichai.nivim.utils.TimePickerFragment;
 import com.elichai.nivim.utils.tools;
@@ -39,9 +44,11 @@ public class MainActivity extends Activity implements OnItemClickListener  {
 	ListView list;
 	ArrayAdapter<String> adapter;
 	AdView a;
-    private static final String TAG = "MyActivity";
+    private static final String TAG = "NivimDebug";
     static Window win;
     public static final String PREFS = "com.elichai.nivim";
+    final double brightness = 0.34;
+    final int color = Color.argb(255, (int)(brightness * 255), (int)(brightness * 255), (int)(brightness * 255));
 
     	public void onCreate(Bundle savedInstanceState) {
     		BugSenseHandler.initAndStartSession(MainActivity.this, "9730ed70");	
@@ -76,6 +83,9 @@ public class MainActivity extends Activity implements OnItemClickListener  {
 		list.setAdapter(adapter);
         list.setOnItemClickListener(this);
         list.setFastScrollEnabled(true);
+        final View v = (View)list.getParent();
+        Drawable bg = v.getBackground();
+        bg.setColorFilter(color, Mode.SCREEN);
         RadView.run();
         tools.alarm(this);
         SharedPreferences settings = this.getSharedPreferences(PREFS, Context.MODE_PRIVATE);

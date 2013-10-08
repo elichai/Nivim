@@ -48,9 +48,8 @@ public class MyAlarmReceiver extends BroadcastReceiver {
         else {    		
             	setOnetimeTimer(con);
             	wl.release();
-            	String[] descriptions = context.getResources().getStringArray(R.array.descriptions);
             	String[] idom = context.getResources().getStringArray(R.array.nivim_list);
-            	int rnd = rn.nextInt(descriptions.length-1);
+            	int rnd = rn.nextInt(idom.length-1);
             	editor.putInt("rnd", rnd);
             	editor.commit();
             	CharSequence tickerText = idom[rnd];

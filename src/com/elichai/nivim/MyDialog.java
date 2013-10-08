@@ -17,29 +17,31 @@ public class MyDialog extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		String[] descriptions = getResources().getStringArray(R.array.descriptions);
-		String[] idom = getResources().getStringArray(R.array.nivim_list);
+		String[] idiom = getResources().getStringArray(R.array.nivim_list);
 		SharedPreferences settings = this.getSharedPreferences(PREFS, Context.MODE_PRIVATE);
-		if(settings.getBoolean("chkbox", true)) create(this, descriptions, idom);
+		if(settings.getBoolean("chkbox", true)) create(this, descriptions, idiom);
 //    	else Toast.makeText(context, "Dialog-ChkBox Disabled", Toast.LENGTH_LONG).show(); //Debug option
 //       finish();
 	}
-public static void create (final Context context,String[] descriptions, String[] idom) {	
+public static void create (final Context context,String[] descriptions, String[] idiom) {
 	SharedPreferences settings = context.getSharedPreferences(PREFS, Context.MODE_PRIVATE);
 	
-	
+	String Derror = context.getResources().getString(R.string.DialogError);
+    String Dbutton = context.getResources().getString(R.string.DialogButton);
+    
 	AlertDialog.Builder builder = new AlertDialog.Builder(context);
     builder.setCancelable(true);
     int rnd = settings.getInt("rnd", -1);
-    if(rnd==-1){builder.setTitle("שגיאה");builder.setMessage("שגיאה");}
+    if(rnd==-1){builder.setTitle(Derror);builder.setMessage(Derror);}
     else{
-        builder.setTitle(idom[rnd]);
+        builder.setTitle(idiom[rnd]);
         try{
         	builder.setMessage(descriptions[rnd]);
         } catch (Exception e) {
         	Toast.makeText(context, "PopUp-Random faild" + e.getMessage(), Toast.LENGTH_LONG).show();
         }
         builder.setInverseBackgroundForced(false);
-        builder.setPositiveButton("סגור",
+        builder.setPositiveButton(Dbutton,
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog,

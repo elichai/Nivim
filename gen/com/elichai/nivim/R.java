@@ -52,6 +52,8 @@ public final class R {
         public static final int activity_main=0x7f080000;
     }
     public static final class string {
+        public static final int DialogButton=0x7f06000b;
+        public static final int DialogError=0x7f06000a;
         public static final int Header=0x7f060004;
         public static final int TimePick=0x7f060008;
         public static final int Title=0x7f060003;

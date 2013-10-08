@@ -10,4 +10,6 @@
 	<string name="dialog">דיאלוג</string>
 	<string name="TimePick">בחר שעה לפתגם אקראי</string>
 	<string name="chkbox">אפשר פתגם אקראי יומי</string>
+    <string name="DialogError">שגיאה</string>
+	<string name="DialogButton">סגור</string>
 </resources>
